@@ -1,0 +1,28 @@
+@charset "EUC-KR";
+
+.maintable{
+	font-family:µ¸À½;
+	border-collapse: collapse;
+}
+.logo_img{
+		border-radius: 100px 0px 100px 100px;
+}
+.menu{
+	font-weight: bold;
+}
+.bgcolor1{
+	background:#ff8c00; /*Â£Àº ÁÖÈ²»ö */
+}
+.bgcolor2{
+	background:#060; /*Â£Àº ÃÊ·Ï»ö*/
+}
+.bgcolor3{
+	background:gray;
+}
+.bgcolor4{
+	background:lightgray;
+}
+.fontcolor1{
+	color:white;
+}
+

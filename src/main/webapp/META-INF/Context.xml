@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+	<Resource name="jdbc/OracleDB"
+		auth="Container"
+		type="javax.sql.DataSource"
+		username="jspid"
+		password="jsppw"
+		driverClassName="oracle.jdbc.driver.OracleDriver"
+		factory="org.apache.commons.dbcp.BasicDataSourceFactory"
+		url="jdbc:oracle:thin:@localhost:1521:orcl"
+		maxActive="500" 
+		maxIdel="100"/>	
+		<!-- name // 이러한 설정들의 이름을 설정 -->
+		<!-- maxActive //최대 연결 가능한 connection 객체 수: 최대 500명까지 동시접속 가능 -->	
+		<!-- maxIdel //최대 대기자 수: 최대 100명까지 대기 가능 -->	
+</Context>

@@ -1,0 +1,330 @@
+-- 회원가입 table
+
+drop sequence accseq;
+
+create sequence accseq  
+increment by 1
+start with 1
+maxvalue 10000
+nocache;
+
+drop table account cascade constraints;
+create table account(
+	no number not null primary key,
+	id varchar2(20) not null unique,
+	pw varchar2(20) not null,
+	email varchar2(30) not null,
+	name varchar2(20) not null,
+	rrn1 number(6) not null,
+	rrn2 number(7) not null,
+	hp1 number(3) not null,
+	hp2 number(4) not null,
+	hp3 number(4) not null,
+	joindate date default sysdate
+);
+
+insert into account values(accseq.nextval,'admin','1234','admin@naver.com','관리자',0,0,0,0,0,default);
+insert into account values(accseq.nextval,'kwon','1234','kwon@naver.com','권준',0,0,0,0,0,default);
+
+commit;
+
+col no for 999;
+col id for a8;
+col pw for a8;
+col email for a20;
+col name for a6;
+col rrn1 for 999999;
+col rrn2 for 9999999;
+col hp1 for 999;
+col hp2 for 9999;
+col hp3 for 9999;
+col joindate for a8;
+
+select * from account;
+
+--상품 table
+drop sequence prodseq;
+
+create sequence prodseq  
+increment by 1
+start with 1
+maxvalue 10000
+nocache;
+
+drop table product cascade constraints;
+create table product(
+	pno number not null primary key,
+	pcat varchar2(40) not null,
+	pname varchar2(40) not null unique,
+	pimage varchar2(50),
+	price number(6) not null,
+	pspec varchar2(20) not null,
+	pcontents varchar2(150) not null
+);
+
+insert into product values(prodseq.nextval,'Cupcake','블루베리 그린티','녹차 나무.jpg','6300','NORMAL','새콤달콤한 블루베리와 달달한 녹차크림의 조화로운 맛');
+insert into product values(prodseq.nextval,'Cupcake','딸기 밀크쉐이크','딸기 밀크쉐이크.jpg','6300','NEW','신년을 맞아 새로 출시한 달콤한 딸기 밀크쉐이크 컵케이크');
+insert into product values(prodseq.nextval,'Cupcake','블루베리 망고','블루베리 망고.jpg','6300','NORMAL','새콤달콤한 블루베리와 망고의 만남. 새콤달콤한 컵케이크');
+insert into product values(prodseq.nextval,'Cupcake','스위티 펌킨','스위티 펌킨.jpg','6300','NEW','크리스마스 한정판 컵케이크, 달콤한 호박맛 컵케이크');
+insert into product values(prodseq.nextval,'Cupcake','오레오','오레오.jpg','6300','BEST','누구나 좋아하는 오레오맛 컵케이크');
+insert into product values(prodseq.nextval,'Cupcake','치즈뽀또','치즈뽀또.jpg','6300','NORMAL','치즈뽀또맛 컵케이크');
+insert into product values(prodseq.nextval,'Cupcake','컵케이크 세트','컵케익 세트.jpg','35000','NORMAL','컵케이크 6종 세트, 6종류의 컵케이크를 한번에 만나보세요');
+insert into product values(prodseq.nextval,'Cupcake','크리미 스트로베리','크리미 딸기.jpg','6300','BEST','부드러운 딸기맛 크림과 촉촉한 시트가 매력적인 컵케이크');
+insert into product values(prodseq.nextval,'Cupcake','피넛 잼','피넛 잼.jpg','6300','NORMAL','땅콩버터맛 컵케이크, 땅콩알레르기가 있다면 추천하지 않아요!');
+insert into product values(prodseq.nextval,'Cupcake','헤이즐넛 누텔라','헤이즐넛 누텔라.jpg','6300','NORMAL','헤이즐넛과 누텔라의 조화! 달달한 컵케이크');
+insert into product values(prodseq.nextval,'Brownie','로투스 브라우니','로투스 브라우니.jpg','5800','NEW','로투스맛 초코브라우니');
+insert into product values(prodseq.nextval,'Brownie','초코 브라우니','초코브라우니.jpg','5800','BEST','기본적인 초코맛 초코브라우니');
+insert into product values(prodseq.nextval,'Others','오틀리 초코','오틀리 초코.jpg','2000','NORMAL','초코맛 오틀리');
+insert into product values(prodseq.nextval,'Others','오틀리','오틀리.jpg','2000','NORMAL','오틀리');
+
+
+
+col pno for 999;
+col pspec for a6;
+col pname for a20;
+
+select pno,pspec,pname from product;
+
+commit;
+
+--카테고리 table
+drop sequence catseq;
+
+create sequence catseq  
+increment by 1
+start with 1
+maxvalue 10000
+nocache;
+
+drop table category cascade constraints;
+create table category(
+	cno number not null primary key,
+	cname varchar2(40) not null unique
+);
+
+insert into category values(catseq.nextval,'Cupcake');
+insert into category values(catseq.nextval,'Brownie');
+insert into category values(catseq.nextval,'Others');
+
+commit;
+
+-- 매출 주문 테이블
+drop sequence ordseq;
+
+create sequence ordseq 
+increment by 1
+start with 1
+minvalue 0
+maxvalue 10000
+nocache;
+
+drop table orders cascade constraints;
+create table orders(
+	ono number primary key, -- 주문번호(ordseq)
+	memno number not null, -- 회원번호
+	pno varchar2(20) not null, -- 상품번호
+	p_num varchar2(20) not null, -- 상품갯수
+	tot_price number not null, -- 전체가격
+	ord_date date default sysdate, --주문일
+	takeout_date varchar2(10) not null --수취일
+);
+
+commit;
+
+-- 게시글 테이블
+drop sequence boardseq;
+create sequence boardseq
+increment by 1
+start with 1
+maxvalue 10000
+nocache;
+
+drop table board cascade constraints;
+create table board(
+	bno number primary key,
+	writer varchar2(20) not null,
+	ip varchar2(15) not null,
+	subject varchar2(50) not null,
+	content varchar2(300) not null,
+	readcount number default 0,
+	reg_date date default sysdate
+);
+
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목1','내용1',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목2','내용2',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목3','내용3',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목4','내용4',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목5','내용5',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목6','내용6',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목7','내용7',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목8','내용8',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목9','내용9',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목10','내용10',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목11','내용11',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목12','내용12',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목1','내용1',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목2','내용2',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목3','내용3',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목4','내용4',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목5','내용5',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목6','내용6',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목7','내용7',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목8','내용8',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목9','내용9',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목10','내용10',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목11','내용11',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목12','내용12',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목1','내용1',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목2','내용2',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목3','내용3',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목4','내용4',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목5','내용5',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목6','내용6',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목7','내용7',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목8','내용8',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목9','내용9',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목10','내용10',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목11','내용11',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목12','내용12',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목13','내용13',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목14','내용14',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목15','내용15',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목16','내용16',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목17','내용17',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목1','내용1',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목2','내용2',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목3','내용3',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목4','내용4',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목5','내용5',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목6','내용6',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목7','내용7',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목8','내용8',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목9','내용9',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목10','내용10',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목11','내용11',default,default);
+insert into board values(boardseq.nextval,'admin','127.0.0.1','제목12','내용12',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목13','내용13',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목14','내용14',default,default);
+insert into board values(boardseq.nextval,'kwon','127.0.0.1','제목15','내용15',default,default);
+
+drop sequence repseq;
+create sequence repseq
+increment by 1
+start with 1
+maxvalue 10000
+nocache;
+
+drop table reply cascade constraints;
+create table reply(
+	rno number primary key,
+	bno number not null references board(bno) on delete cascade,
+	r_writer varchar2(20) not null,
+	r_content varchar2(150) not null,
+	r_reg_date date default sysdate,
+	r_ip varchar2(15) not null
+);
+
+insert into reply values(repseq.nextval,56,'admin','답변1',default,'127.0.0.1');
+insert into reply values(repseq.nextval,55,'admin','답변1',default,'127.0.0.1');
+insert into reply values(repseq.nextval,54,'admin','답변1',default,'127.0.0.1');
+insert into reply values(repseq.nextval,53,'admin','답변1',default,'127.0.0.1');
+insert into reply values(repseq.nextval,52,'admin','답변1',default,'127.0.0.1');
+insert into reply values(repseq.nextval,51,'admin','답변1',default,'127.0.0.1');
+insert into reply values(repseq.nextval,50,'admin','답변1',default,'127.0.0.1');
+insert into reply values(repseq.nextval,49,'admin','답변1',default,'127.0.0.1');
+insert into reply values(repseq.nextval,48,'admin','답변1',default,'127.0.0.1');
+insert into reply values(repseq.nextval,47,'admin','답변1',default,'127.0.0.1');
+
+
+drop sequence notseq;
+create sequence notseq
+increment by 1
+start with 1
+maxvalue 10000
+nocache;
+
+drop table notify cascade constraints;
+create table notify(
+	nno number primary key,
+	spec varchar2(20) not null,
+	subject varchar2(100) not null,
+	content varchar2(300) not null,
+	reg_date date default sysdate
+);
+
+insert into notify values(notseq.nextval,'이벤트','제목6','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목7','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목8','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목9','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목10','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목11','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목12','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목13','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목16','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목14','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목15','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목6','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목7','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목8','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목9','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목10','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목11','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목12','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목6','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목7','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목8','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목9','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목10','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목11','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목12','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목13','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목16','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목14','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목15','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목6','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목7','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목8','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목9','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목10','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목11','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목12','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목6','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목7','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목8','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목9','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목10','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목11','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목12','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목13','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목16','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목14','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목15','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목6','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목7','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목8','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목9','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목10','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목11','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목12','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목13','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목16','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목14','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목15','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목6','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목7','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목8','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목9','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목10','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목11','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목12','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목13','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목16','내용1',default);
+insert into notify values(notseq.nextval,'공지사항','제목14','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','제목15','내용1',default);
+insert into notify values(notseq.nextval,'이벤트','22/2/25일 크리스마스 이벤트안내','안내~','2021-12-23');
+insert into notify values(notseq.nextval,'공지사항','22/1/1일 정상영업 안내','신년이지만 엽니다','2021-12-28');
+insert into notify values(notseq.nextval,'이벤트','22/1/10 ~ 22/2/10 컵케이크 3+1 이벤트 안내','이벤트 진행함','2022-1-1');
+insert into notify values(notseq.nextval,'공지사항','22/1/27일 휴무 안내','갑작스럽게 쉬고싶어져 쉽니다','2022-1-25');
+insert into notify values(notseq.nextval,'공지사항','22/2/24일 오전 휴무 안내','아침에 쉬고싶어 쉽니다','2022-2-23');
+
+commit;
